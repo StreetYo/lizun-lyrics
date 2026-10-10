@@ -1,0 +1,72 @@
+{
+  "id": "lizun.lyrics",
+  "name": "Lyrics",
+  "version": "1.0.0",
+  "author": "Lizun",
+  "description": "Lyrics of the song that is playing, line by line in time with it, from LRCLIB",
+  "entry": "index.html",
+  "width": 340,
+  "permissions": ["media:read", "media:control", "storage"],
+  "network": ["https://lrclib.net"],
+  "settings": [
+    {
+      "key": "textSize",
+      "type": "number",
+      "label": "Text size",
+      "default": 15,
+      "min": 12,
+      "max": 22,
+      "unit": "px"
+    },
+    {
+      "key": "offset",
+      "type": "number",
+      "label": "Timing offset",
+      "description": "Moves the lines if they come too early or too late. More than 0 shows them earlier.",
+      "default": 0,
+      "min": -3000,
+      "max": 3000,
+      "step": 100,
+      "unit": "ms"
+    },
+    {
+      "key": "align",
+      "type": "select",
+      "label": "Current line",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "In the middle" },
+        { "value": "top", "label": "Near the top" }
+      ]
+    },
+    {
+      "key": "clickToSeek",
+      "type": "toggle",
+      "label": "Click a line to jump to it",
+      "description": "Works with players that let Lizun move the playback position.",
+      "default": true
+    }
+  ],
+  "locales": {
+    "ru": {
+      "name": "Текст песни",
+      "description": "Текст играющей песни, строка за строкой в такт музыке, из LRCLIB",
+      "settings": {
+        "textSize": { "label": "Размер текста", "unit": "пкс" },
+        "offset": {
+          "label": "Сдвиг по времени",
+          "description": "Сдвигает строки, если они появляются слишком рано или поздно. Больше 0 — раньше.",
+          "unit": "мс"
+        },
+        "align": {
+          "label": "Текущая строка",
+          "options": { "center": "Посередине", "top": "Ближе к верху" }
+        },
+        "clickToSeek": {
+          "label": "Переход по щелчку на строку",
+          "description": "Работает с плеерами, которые позволяют Lizun менять позицию воспроизведения."
+        }
+      }
+    }
+  }
+}
