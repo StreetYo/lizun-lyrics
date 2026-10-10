@@ -9,6 +9,8 @@ const HEADERS = {
 };
 /** How far a search result's length may be from the track's to count as the same recording. */
 const DURATION_SLACK_S = 3;
+/** The longest track LRCLIB takes a question about. */
+const MAX_DURATION_S = 3600;
 
 /** LRCLIB did not answer usefully: the network, a 5xx, a rate limit. Not cached. */
 export class LookupError extends Error {}
@@ -21,7 +23,8 @@ async function getJson(path, params) {
   } catch (error) {
     throw new LookupError(error?.message ?? String(error));
   }
-  if (response.status === 404) return null;
+  // 400 is LRCLIB refusing the question (such as a length it does not take), not an outage.
+  if (response.status === 404 || response.status === 400) return null;
   if (!response.ok) throw new LookupError(`LRCLIB answered ${response.status}`);
   try {
     return response.json();
@@ -74,6 +77,8 @@ function resultOf(record) {
  */
 export async function findLyrics(song, durationMs, stillWanted = () => true) {
   const durationS = durationMs ? Math.round(durationMs / 1000) : 0;
+  // LRCLIB keeps songs up to an hour long; anything longer is a stream, a podcast or a mix.
+  if (durationS > MAX_DURATION_S) return { kind: 'none' };
   let fallback = null;
 
   if (song.artist && durationS) {
